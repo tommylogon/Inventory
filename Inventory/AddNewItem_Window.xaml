@@ -1,0 +1,41 @@
+﻿<Window x:Class="Inventory.AddNewItem_Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Inventory"
+        mc:Ignorable="d"
+        Title="AddNewItem_Window" Height="450" Width="295.05">
+    <Grid>
+        <StackPanel x:Name="sp_MainArea" HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" VerticalAlignment="Top" Width="267">
+            <WrapPanel Height="31">
+                <Label Content="Name" Margin="2" Width="59" />
+                <TextBox Height="22" Margin="2" TextWrapping="Wrap" Text="{Binding Path=NewItem.Name}" Width="191" />
+            </WrapPanel>
+            <WrapPanel Height="31">
+                <Label Content="Barcode" Margin="2" Width="59" />
+                <TextBox Height="22" Margin="2" TextWrapping="Wrap" Text="{Binding Path=NewItem.Barcode}" Width="191" />
+            </WrapPanel>
+            <WrapPanel Height="31">
+                <Label Content="Life Time" Margin="2" Width="59" />
+                <TextBox Height="22" Margin="2" TextWrapping="Wrap" Text="{Binding Path=NewItem.LifeTime}" Width="191" />
+            </WrapPanel>
+            <WrapPanel Height="31">
+                <Label Content="Price" Margin="2" Width="59" />
+                <TextBox Height="22" Margin="2" TextWrapping="Wrap" Text="{Binding Path=NewItem.Price}" Width="191" />
+            </WrapPanel>
+            <WrapPanel Height="31">
+                <Label Content="Weight" Margin="2" Width="59" />
+                <TextBox Height="22" Margin="2" TextWrapping="Wrap" Text="{Binding Path=NewItem.Weight}" Width="191" />
+            </WrapPanel>
+            <WrapPanel Height="31">
+                <Label Content="Store" Margin="2" Width="59" />
+                <TextBox Height="22" Margin="2" TextWrapping="Wrap" Text="{Binding Path=NewItem.Store}" Width="191" />
+            </WrapPanel>
+            <WrapPanel>
+                <Button Content="Add" Margin="2" Width="100" Click="Button_Click" />
+                <Button Content="Cancel" Margin="2" Width="100" />
+            </WrapPanel>
+        </StackPanel>
+    </Grid>
+</Window>

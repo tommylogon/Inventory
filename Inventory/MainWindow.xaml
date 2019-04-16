@@ -6,7 +6,22 @@
         xmlns:local="clr-namespace:Inventory"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+    <Grid Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+        <DataGrid ItemsSource="{Binding Path=Foods}" AutoGenerateColumns="False" RowEditEnding="Inventory_RowEditEnding" Margin="0,34,0,0">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Navn" />
+
+                <DataGridTextColumn Header="Navn" Binding="{Binding Path=BaseItem.Name}" />
+                <DataGridTextColumn Header="Plassering" Binding="{Binding Path=Location}" />
+                <DataGridTextColumn Header="Antall" Binding="{Binding Path=Amounth}" />
+                <DataGridTextColumn Header="Kjøpt" Binding="{Binding Path=BoughtDate}" />
+                <DataGridTextColumn Header="utløpsdato" Binding="{Binding Path=ExpirationDate}" />
+                <DataGridTemplateColumn Header="+  /   -" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <WrapPanel Margin="0,0,10,385">
+            <Button Content="Add New Item Type" HorizontalAlignment="Left" Height="24" Margin="2" VerticalAlignment="Top" Width="113" Click="OpenNewItemWindow_Clicked" />
+            <Button Content="Add New Food" HorizontalAlignment="Left" Height="24" Margin="2" VerticalAlignment="Top" Width="91" Click="AddNewFood_Clicked" />
+        </WrapPanel>
     </Grid>
 </Window>
