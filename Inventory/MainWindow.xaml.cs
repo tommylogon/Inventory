@@ -1,5 +1,4 @@
-﻿using Inventory.Classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -16,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.Entity;
 
 namespace Inventory
 {
@@ -31,6 +31,7 @@ namespace Inventory
             InitializeComponent();
             DataContext = this;
             AppWindow = this;
+
             Item bread = new Item();
             bread.Name = "bread";
             bread.Barcode = "21354681321";
@@ -38,14 +39,17 @@ namespace Inventory
             bread.Price = 30;
             bread.Store = "EuroCash";
 
-            Food food = new Food(bread)
+            Food food = new Food()
             {
                 Location = "fryseren",
+                BaseItem = "21354681321",
+                Item = bread
             };
-
-            Items.Add(bread);
-            Foods.Add(food);
-            SaveFile();
+            using (var db = new InventoryContext())
+            {
+                db.Items.Add(bread);
+                db.SaveChanges();
+            }
         }
 
         private void LoadFile()
