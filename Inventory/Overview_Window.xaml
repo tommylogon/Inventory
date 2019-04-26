@@ -1,0 +1,16 @@
+﻿<Window x:Class="Inventory.Overview_Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Inventory"
+        mc:Ignorable="d"
+        Title="Overview_Window" Height="450" Width="800">
+    <Grid>
+        <WrapPanel HorizontalAlignment="Left" Height="375" Margin="10,34,0,0" VerticalAlignment="Top" Width="772" Background="#FFF3EFEF">
+            <Button x:Name="btn_fridge" Content="Kjøleskap" Margin="5" Width="140" Height="145" Click="Btn_fridge_Click"/>
+            <Button x:Name="btn_freezer" Content="Fryzeren"  Width="140" Height="145" Click="Btn_fridge_Click"/>
+        </WrapPanel>
+
+    </Grid>
+</Window>

@@ -39,17 +39,26 @@ namespace Inventory
             bread.Price = 30;
             bread.Store = "EuroCash";
 
-            Food food = new Food()
+            for(int i = 0; i<10; i++)
             {
-                Location = "fryseren",
-                BaseItem = "21354681321",
-                Item = bread
-            };
-            using (var db = new InventoryContext())
-            {
-                db.Items.Add(bread);
-                db.SaveChanges();
+                Food food = new Food()
+                {
+                    Location = "fryseren",
+                    Item = bread,
+                    BoughtDate = DateTime.Now
+                    
+
+                };
+                food.ExpirationDate = food.BoughtDate.AddDays(-food.Item.LifeTime);
+                Foods.Add(food);
             }
+            
+            LoadFile();
+            //using (var db = new InventoryContext())
+            //{
+            //    db.Items.Add(bread);
+            //    db.SaveChanges();
+            //}
         }
 
         private void LoadFile()
@@ -146,6 +155,12 @@ namespace Inventory
         {
             AddFood_Window window = new AddFood_Window();
             window.Show();
+        }
+
+        private void OpenOverview_Clicked(object sender, RoutedEventArgs e)
+        {
+            Overview_Window overview = new Overview_Window();
+            overview.Show();
         }
     }
 }
