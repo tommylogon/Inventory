@@ -3,15 +3,81 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:Inventory"
         mc:Ignorable="d"
-        Title="AddFood_Window" Height="450" Width="299.505">
-    <Grid>
-        <StackPanel HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" VerticalAlignment="Top" Width="272">
-            <WrapPanel Height="44">
-                <Label Content="Base Item" Margin="2" />
-                <ComboBox Width="202" DataContext="{Binding Path=Items}" />
-            </WrapPanel>
+        Title="Add New Food Item" Height="500" Width="400"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="14"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        WindowStartupLocation="CenterOwner">
+    
+    <Grid Margin="16">
+        <StackPanel>
+            <TextBlock Text="Add New Food Item"
+                       Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                       Margin="0 0 0 16"/>
+
+            <TextBox materialDesign:HintAssist.Hint="Name"
+                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Margin="0 8"/>
+
+            <TextBox materialDesign:HintAssist.Hint="Barcode"
+                     Text="{Binding Barcode, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Margin="0 8"/>
+
+            <ComboBox materialDesign:HintAssist.Hint="Category"
+                      Text="{Binding Category, UpdateSourceTrigger=PropertyChanged}"
+                      IsEditable="True"
+                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                      ItemsSource="{Binding Categories}"
+                      Margin="0 8"/>
+
+            <ComboBox materialDesign:HintAssist.Hint="Location"
+                      Text="{Binding Location, UpdateSourceTrigger=PropertyChanged}"
+                      IsEditable="True"
+                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                      ItemsSource="{Binding Locations}"
+                      Margin="0 8"/>
+
+            <TextBox materialDesign:HintAssist.Hint="Weight (g)"
+                     Text="{Binding Weight, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Margin="0 8"/>
+
+            <TextBox materialDesign:HintAssist.Hint="Price"
+                     Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Margin="0 8"/>
+
+            <TextBox materialDesign:HintAssist.Hint="Lifetime (days)"
+                     Text="{Binding LifeTime, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Margin="0 8"/>
+
+            <DatePicker materialDesign:HintAssist.Hint="Bought Date"
+                        SelectedDate="{Binding BoughtDate}"
+                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                        Margin="0 8"/>
+
+            <TextBox materialDesign:HintAssist.Hint="Store"
+                     Text="{Binding Store, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Margin="0 8"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 16 0 0">
+                <Button Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{Binding CancelCommand}"
+                        Content="CANCEL"
+                        Margin="0 0 8 0"/>
+                <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                        Command="{Binding SaveCommand}"
+                        Content="SAVE"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

@@ -3,25 +3,158 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:Inventory"
+        xmlns:vm="clr-namespace:Inventory.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-        <DataGrid ItemsSource="{Binding Path=Foods}" AutoGenerateColumns="False" RowEditEnding="Inventory_RowEditEnding" Margin="0,34,0,0">
-            <DataGrid.Columns>
-                
-                <DataGridTextColumn Header="Type" Binding="{Binding Path=Item.Name}" />
-                <DataGridTextColumn Header="Plassering" Binding="{Binding Path=Location}" />
-                <DataGridTextColumn Header="Antall" Binding="{Binding Path=Amounth}" />
-                <DataGridTextColumn Header="Kjøpt" Binding="{Binding Path=BoughtDate}" />
-                <DataGridTextColumn Header="utløpsdato" Binding="{Binding Path=ExpirationDate}" />
-                <DataGridTemplateColumn Header="+  /   -" />
-            </DataGrid.Columns>
-        </DataGrid>
-        <WrapPanel Margin="0,0,10,385">
-            <Button Content="Add New Item Type" HorizontalAlignment="Left" Height="24" Margin="2" VerticalAlignment="Top" Width="113" Click="OpenNewItemWindow_Clicked" />
-            <Button Content="Add New Food" HorizontalAlignment="Left" Height="24" Margin="2" VerticalAlignment="Top" Width="91" Click="AddNewFood_Clicked" />
-            <Button  Content="Open Overview" Width="75" Click="OpenOverview_Clicked"/>
-        </WrapPanel>
+        Title="{Binding Title}" Height="600" Width="1000"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="14"
+        FontFamily="{DynamicResource MaterialDesignFont}">
+    
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Top Bar -->
+        <materialDesign:ColorZone Mode="PrimaryMid" Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2">
+            <DockPanel>
+                <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontSize="22"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                            ToolTip="Add New Food Item"
+                            Command="{Binding AddFoodCommand}">
+                        <materialDesign:PackIcon Kind="Plus" Height="24" Width="24"/>
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            Margin="8 0 0 0"
+                            ToolTip="Refresh"
+                            Command="{Binding RefreshCommand}">
+                        <materialDesign:PackIcon Kind="Refresh" Height="24" Width="24"/>
+                    </Button>
+                </StackPanel>
+            </DockPanel>
+        </materialDesign:ColorZone>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1" Margin="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="300"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Food Items List -->
+            <materialDesign:Card Padding="8" Margin="0 0 8 0">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="Inventory Items" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8"/>
+                    <DataGrid ItemsSource="{Binding Foods}"
+                              SelectedItem="{Binding SelectedFood}"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                              materialDesign:DataGridAssist.ColumnHeaderPadding="8">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Location" Binding="{Binding Location}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Expiration" Binding="{Binding ExpirationDate, StringFormat=d}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding ExpirationStatus}" IsReadOnly="True">
+                                <DataGridTextColumn.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ExpirationStatus}" Value="Expired">
+                                                <Setter Property="Background" Value="#FFEBEE"/>
+                                                <Setter Property="Foreground" Value="#D32F2F"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ExpirationStatus}" Value="Expiring Soon">
+                                                <Setter Property="Background" Value="#FFF3E0"/>
+                                                <Setter Property="Foreground" Value="#F57C00"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Style="{StaticResource MaterialDesignIconButton}"
+                                                Command="{Binding DataContext.DeleteFoodCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="Delete">
+                                            <materialDesign:PackIcon Kind="Delete"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </materialDesign:Card>
+
+            <!-- Right Panel -->
+            <StackPanel Grid.Column="1" Margin="8 0 0 0">
+                <!-- Expiring Items -->
+                <materialDesign:Card Padding="8" Margin="0 0 0 16">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" Text="Expiring Soon" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8"/>
+                        <ListBox ItemsSource="{Binding ExpiringFoods}" MaxHeight="200">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="8">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                        <TextBlock>
+                                            <Run Text="Expires in"/>
+                                            <Run Text="{Binding DaysUntilExpiration}"/>
+                                            <Run Text="days"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </DockPanel>
+                </materialDesign:Card>
+
+                <!-- Locations -->
+                <materialDesign:Card Padding="8" Margin="0 0 0 16">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" Text="Locations" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8"/>
+                        <ListBox ItemsSource="{Binding Locations}"/>
+                    </DockPanel>
+                </materialDesign:Card>
+
+                <!-- Categories -->
+                <materialDesign:Card Padding="8">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" Text="Categories" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="8"/>
+                        <ListBox ItemsSource="{Binding Categories}"/>
+                    </DockPanel>
+                </materialDesign:Card>
+            </StackPanel>
+        </Grid>
+
+        <!-- Status Bar -->
+        <materialDesign:ColorZone Grid.Row="2" Mode="PrimaryLight" Padding="8">
+            <DockPanel>
+                <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="MainSnackbar" DockPanel.Dock="Center"/>
+            </DockPanel>
+        </materialDesign:ColorZone>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.RowSpan="3" Background="#80000000" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" 
+                        Value="0" 
+                        IsIndeterminate="True" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"/>
+        </Grid>
     </Grid>
 </Window>

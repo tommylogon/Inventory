@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Inventory.ViewModel;
 
 namespace Inventory
 {
@@ -22,7 +23,7 @@ namespace Inventory
         public AddFood_Window()
         {
             InitializeComponent();
-            DataContext = MainWindow.AppWindow;
+            DataContext = new AddFoodViewModel(this);
         }
     }
 }
